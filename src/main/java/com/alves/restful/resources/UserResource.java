@@ -3,8 +3,10 @@ package com.alves.restful.resources;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.alves.restful.domain.User;
+import com.alves.restful.dto.UserDTO;
 import com.alves.restful.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,9 +23,9 @@ public class UserResource {
     @Autowired
     private UserService service;
     @GetMapping
-    public ResponseEntity<List<User>> findAll(){
-        String lucas = "lucas";
+    public ResponseEntity<List<UserDTO>> findAll(){
         List<User> list = service.findALL();
-        return ResponseEntity.ok().body(list);
+        List<UserDTO> listDTO = list.stream().map(x -> new UserDTO(x)).collect(Collectors.toList());
+        return ResponseEntity.ok().body(listDTO);
     }
 }
